@@ -12,29 +12,30 @@ private:
     int priority;
 
 public:
-    // Constructor mặc định
+    // Constructors
     Task();
-
-    // Constructor có tham số
     Task(const std::string& title, const Date& startDate, const Date& endDate, int priority);
 
-    // Getter
+    // Getters
     std::string getTitle() const;
     Date getStartDate() const;
     Date getEndDate() const;
     int getPriority() const;
 
-    // Setter
+    // Setters
     void setTitle(const std::string& title);
     void setStartDate(const Date& startDate);
     void setEndDate(const Date& endDate);
     void setPriority(int priority);
 
-    // Kiểm tra lỗi ngày kết thúc trước ngày bắt đầu
+    // Các hàm của Thành viên 1
     void validateDates() const;
-
-    // In thông tin cơ bản của task
     void displayBasicInfo() const;
+
+    // Các hàm của Thành viên 2 (Chỉ xuất hiện duy nhất 1 lần ở đây)
+    int calculateUrgencyScore() const;        
+    bool operator<(const Task& other) const;  
+    Task& operator++();                       
 };
 
 #endif
