@@ -1,12 +1,40 @@
-#include "Project.h"
+#include "../include/Project.h"
 #include <iostream>
 #include <algorithm> // Thư viện bắt buộc để dùng hàm std::sort
+#include <stdexcept> // Thư viện chứa std::overflow_error
+
+// Ngưỡng giới hạn bộ đệm để phục vụ kịch bản Stress-test 10.000 tasks
+const size_t MAX_TASKS_LIMIT = 5000;
 
 Project::Project(std::string name) : projectName(name) {}
 
 // Thêm nhiệm vụ vào danh sách vector
 void Project::addTask(const Task& t) {
+    // Kiểm tra nếu vượt quá giới hạn an toàn thì ném ngoại lệ ngay lập tức
+    if (taskList.size() >= MAX_TASKS_LIMIT) {
+        throw std::overflow_error("Buffer Overflow: Danh sach nhiem vu vuot qua gioi han an toan (5000 tasks) cua Chronos!");
+    }
+    
+    // Chụp lại trạng thái của taskList trước khi thêm để làm tính năng Hoàn tác
+    undoStack.push(taskList);
+
+    // Thêm nhiệm vụ vào danh sách vector
     taskList.push_back(t);
+}
+
+void Project::undo() {
+    if (undoStack.empty()) {
+        std::cout << "[Undo Warning] Khong co hanh dong nao de hoan tac!\n";
+        return;
+    }
+    
+    // Khôi phục lại trạng thái cũ từ đỉnh stack lịch sử
+    taskList = undoStack.top();
+    
+    // Xóa trạng thái đó ra khỏi stack
+    undoStack.pop();
+    
+    std::cout << "[Undo System] Hoan tac thanh cong! Da quay lai trang thai phia truoc.\n";
 }
 
 // Sắp xếp tự động sử dụng toán tử < 
