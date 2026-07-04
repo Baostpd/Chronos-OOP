@@ -17,7 +17,7 @@ public:
     Project(std::string name);
 
     // Các phương thức cốt lõi (Thành viên 2)
-    void addTask(const Task& t);        // Hàm thêm nhiệm vụ mới vào vector
+    void addTask(const Task& t, bool saveHistory = true);        // Hàm thêm nhiệm vụ mới vào vector
     void sortTasks();                  // Hàm sắp xếp tự động dựa trên toán tử <
     void displayDashboard() const;     // Hàm hiển thị dữ liệu dạng bảng CLI
     void undo(); //Hàm hoàn tác

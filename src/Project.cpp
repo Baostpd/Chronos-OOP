@@ -9,14 +9,15 @@ const size_t MAX_TASKS_LIMIT = 5000;
 Project::Project(std::string name) : projectName(name) {}
 
 // Thêm nhiệm vụ vào danh sách vector
-void Project::addTask(const Task& t) {
+void Project::addTask(const Task& t, bool saveHistory) {
     // Kiểm tra nếu vượt quá giới hạn an toàn thì ném ngoại lệ ngay lập tức
     if (taskList.size() >= MAX_TASKS_LIMIT) {
         throw std::overflow_error("Buffer Overflow: Danh sach nhiem vu vuot qua gioi han an toan (5000 tasks) cua Chronos!");
     }
-    
-    // Chụp lại trạng thái của taskList trước khi thêm để làm tính năng Hoàn tác
-    undoStack.push(taskList);
+    if (saveHistory) {
+        // Chụp lại trạng thái của taskList trước khi thêm để làm tính năng Hoàn tác
+        undoStack.push(taskList);
+    }
 
     // Thêm nhiệm vụ vào danh sách vector
     taskList.push_back(t);
