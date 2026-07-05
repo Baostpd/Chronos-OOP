@@ -1,8 +1,8 @@
 #include <iostream>
 #include <stdexcept>
-#include "../include/Date.h"
-#include "../include/Task.h"
-#include "../include/Project.h"
+#include "Date.h"
+#include "Task.h"
+#include "Project.h"
 
 using namespace std;
 
@@ -41,7 +41,8 @@ int main() {
 
     try {
         for (int i = 1; i <= 10000; ++i) {
-            myProject.addTask(t1);
+            // Truyền false để KHÔNG lưu lịch sử Undo trong lúc test tải nặng
+            myProject.addTask(t1, false);
 
             if (i % 1000 == 0) {
                 cout << "-> Da chen em xuoi " << i << " tasks..." << endl;

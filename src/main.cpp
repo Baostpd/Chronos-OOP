@@ -37,6 +37,24 @@ int main() {
         cout << "(* He thong tu dong dua Task co han ngan hon va Priority cao hon len truoc)" << endl;
         myProject.displayDashboard();
 
+        // ==========================================================
+        // 4. GỌI VÀ DEMO TOÁN TỬ ++ (GIA HẠN NHIỆM VỤ)
+        // ==========================================================
+        cout << "\n>>> DEMO TOAN TU ++ (Gia han nhiem vu dau tien them 1 ngay):" << endl;
+        
+        // Lấy tham chiếu đến task đầu tiên trong danh sách để thao tác
+        Task& firstTask = myProject.getTaskList()[0];
+        
+        cout << "[Truoc khi gia han] Deadline la: " << firstTask.getEndDate().toString() << endl;
+        
+        // Gọi toán tử ++ tiền tố đã nạp chồng
+        ++firstTask; 
+        
+        cout << "[Sau khi gia han] Deadline la:   " << firstTask.getEndDate().toString() << endl;
+        cout << "-> Tinh nang nap chong toan tu ++ hoat dong thanh cong!\n";
+        
+        cout << "\n=========================================================" << endl;
+
     } catch (const invalid_argument& e) {
         cout << "\n[LOI HE THONG]: " << e.what() << endl;
     }
