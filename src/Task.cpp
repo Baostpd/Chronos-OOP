@@ -84,3 +84,14 @@ void Task::displayBasicInfo() const {
     std::cout << "Deadline: " << endDate.toString() << std::endl;
     std::cout << "Do uu tien: " << priority << std::endl;
 }
+
+// Tính điểm khẩn cấp
+int Task::calculateUrgencyScore() const {
+    // Mô hình đơn giản: ưu tiên nhân hệ số 10
+    return priority * 10;
+}
+
+// So sánh để sắp xếp: muốn sắp xếp theo điểm khẩn cấp giảm dần
+bool Task::operator<(const Task& other) const {
+    return this->calculateUrgencyScore() > other.calculateUrgencyScore();
+}

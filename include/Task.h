@@ -35,6 +35,12 @@ public:
 
     // In thông tin cơ bản của task
     void displayBasicInfo() const;
+    
+    // Tính điểm khẩn cấp: dựa vào ưu tiên và khoảng thời gian (đơn giản)
+    int calculateUrgencyScore() const;
+
+    // Toán tử so sánh để hỗ trợ std::sort (sắp xếp theo độ khẩn cấp giảm dần)
+    bool operator<(const Task& other) const;
 };
 
 #endif
