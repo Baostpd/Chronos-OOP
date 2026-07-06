@@ -16,64 +16,27 @@ Task::Task(const std::string& title, const Date& startDate, const Date& endDate,
     this->startDate = startDate;
     this->endDate = endDate;
     this->priority = priority;
-
-    // Kiểm tra dữ liệu ngay khi tạo task
     validateDates();
 }
 
 // Getter
-std::string Task::getTitle() const {
-    return title;
-}
-
-Date Task::getStartDate() const {
-    return startDate;
-}
-
-Date Task::getEndDate() const {
-    return endDate;
-}
-
-int Task::getPriority() const {
-    return priority;
-}
+std::string Task::getTitle() const { return title; }
+Date Task::getStartDate() const { return startDate; }
+Date Task::getEndDate() const { return endDate; }
+int Task::getPriority() const { return priority; }
 
 // Setter
-void Task::setTitle(const std::string& title) {
-    this->title = title;
-}
+void Task::setTitle(const std::string& title) { this->title = title; }
+void Task::setStartDate(const Date& startDate) { this->startDate = startDate; validateDates(); }
+void Task::setEndDate(const Date& endDate) { this->endDate = endDate; validateDates(); }
+void Task::setPriority(int priority) { this->priority = priority; }
 
-void Task::setStartDate(const Date& startDate) {
-    this->startDate = startDate;
-    validateDates();
-}
-
-void Task::setEndDate(const Date& endDate) {
-    this->endDate = endDate;
-    validateDates();
-}
-
-void Task::setPriority(int priority) {
-    this->priority = priority;
-}
-
-// Kiểm tra lỗi Time Paradox
+// Kiểm tra lỗi ngày tháng
 void Task::validateDates() const {
-    // Kiểm tra ngày bắt đầu có hợp lệ không
-    if (!startDate.isValid()) {
-        throw std::invalid_argument("Loi: Ngay bat dau khong hop le!");
-    }
-
-    // Kiểm tra ngày kết thúc có hợp lệ không
-    if (!endDate.isValid()) {
-        throw std::invalid_argument("Loi: Ngay ket thuc khong hop le!");
-    }
-
-    // Nếu ngày kết thúc trước ngày bắt đầu
+    if (!startDate.isValid()) throw std::invalid_argument("Loi: Ngay bat dau khong hop le!");
+    if (!endDate.isValid()) throw std::invalid_argument("Loi: Ngay ket thuc khong hop le!");
     if (endDate.isBefore(startDate)) {
-        throw std::invalid_argument(
-            "Time Paradox: Ngay ket thuc khong the truoc ngay bat dau!"
-        );
+        throw std::invalid_argument("Time Paradox: Ngay ket thuc khong the truoc ngay bat dau!");
     }
 }
 
@@ -85,13 +48,26 @@ void Task::displayBasicInfo() const {
     std::cout << "Do uu tien: " << priority << std::endl;
 }
 
-// Tính điểm khẩn cấp
+// =========================================================================
+// PHẦN LOGIC THỰC THI CỦA THÀNH VIÊN 2
+// =========================================================================
+
+// 1. Hàm tính điểm "Khẩn cấp"
 int Task::calculateUrgencyScore() const {
-    // Mô hình đơn giản: ưu tiên nhân hệ số 10
-    return priority * 10;
+    int baseScore = (4 - priority) * 10; 
+    return baseScore;
 }
 
-// So sánh để sắp xếp: muốn sắp xếp theo điểm khẩn cấp giảm dần
+// 2. Nạp chồng toán tử < để sắp xếp tự động
 bool Task::operator<(const Task& other) const {
-    return this->calculateUrgencyScore() > other.calculateUrgencyScore();
+    if (this->endDate.isBefore(other.endDate)) return true;
+    if (other.endDate.isBefore(this->endDate)) return false;
+    return this->priority < other.priority; 
+}
+
+// 3. Nạp chồng toán tử ++ tiền tố để gia hạn thời hạn thêm đúng 1 ngày
+Task& Task::operator++() {
+    this->endDate.advanceOneDay(); 
+    validateDates(); 
+    return *this;
 }
