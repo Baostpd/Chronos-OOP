@@ -1,63 +1,66 @@
 #include <iostream>
+#include <string>
+#include <stdexcept>
 #include "Date.h"
 #include "Task.h"
 #include "Project.h"
+
 using namespace std;
 
+void addTaskFromDashboard(Project& project);
+void viewDashboard(Project& project);
+void undoLastAction(Project& project);
+void extendFirstTask(Project& project);
+void stressTestDashboard(Project& project);
+
 int main() {
-    cout << "=========================================================" << endl;
-    cout << "    HE THONG QUAN LY CONG VIEC CHRONOS - OOP DEMO        " << endl;
-    cout << "=========================================================" << endl;
+    // Ép Terminal xóa bộ đệm và in ra ngay lập tức (kế thừa từ file test của bạn)
+    setvbuf(stdout, NULL, _IONBF, 0); 
+    
+    Project myProject("Chronos Core");
+    int choice;
 
-    // 1. Tạo một dự án mẫu
-    Project myProject("Do an Co so nganh");
-
-    // 2. Tạo các Task hợp lệ và đưa vào danh sách
-    try {
-        Date s1(1, 6, 2026), e1(15, 6, 2026);
-        Date s2(1, 6, 2026), e2(5, 6, 2026);  // Hạn ngắn hơn -> Khẩn cấp hơn
-        Date s3(2, 6, 2026), e3(20, 6, 2026); // Hạn dài nhất
-
-        Task t1("Thanh vien 1: Lam phan Date & Task Base", s1, e1, 2);
-        Task t2("Thanh vien 2: Tinh diem khan cap & Sort", s2, e2, 1); // Priority 1 (Cao)
-        Task t3("Thanh vien Khac: Code chuc nang phu", s3, e3, 3);
-
-        // PHẢI CÓ CÁC DÒNG NÀY ĐỂ NẠP TASK VÀO PROJECT
-        myProject.addTask(t1);
-        myProject.addTask(t2);
-        myProject.addTask(t3);
-
-        cout << "\n>>> DANH SACH TASK BAN DAU:" << endl;
-        myProject.displayDashboard();
-
-        // 3. Gọi tính năng SẮP XẾP TỰ ĐỘNG của Thành viên 2
-        myProject.sortTasks();
-
-        cout << "\n>>> DANH SACH TASK SAU KHI SAP XEP (THANH VIEN 2):" << endl;
-        cout << "(* He thong tu dong dua Task co han ngan hon va Priority cao hon len truoc)" << endl;
-        myProject.displayDashboard();
-
-        // ==========================================================
-        // 4. GỌI VÀ DEMO TOÁN TỬ ++ (GIA HẠN NHIỆM VỤ)
-        // ==========================================================
-        cout << "\n>>> DEMO TOAN TU ++ (Gia han nhiem vu dau tien them 1 ngay):" << endl;
+    do {
+        cout << "\n======== DASHBOARD CHRONOS ========" << endl;
+        cout << "1. Them nhiem vu" << endl;
+        cout << "2. Xem danh sach nhiem vu" << endl;
+        cout << "3. Hoan tac hanh dong" << endl;
+        cout << "4. Gia han nhiem vu dau tien" << endl;
+        cout << "5. Stress-test 10.000 tasks" << endl;
+        cout << "0. Thoat chuong trinh" << endl;
+        cout << "====================================" << endl;
+        cout << "Nhap lua chon cua ban: ";
         
-        // Lấy tham chiếu đến task đầu tiên trong danh sách để thao tác
-        Task& firstTask = myProject.getTaskList()[0];
-        
-        cout << "[Truoc khi gia han] Deadline la: " << firstTask.getEndDate().toString() << endl;
-        
-        // Gọi toán tử ++ tiền tố đã nạp chồng
-        ++firstTask; 
-        
-        cout << "[Sau khi gia han] Deadline la:   " << firstTask.getEndDate().toString() << endl;
-        cout << "-> Tinh nang nap chong toan tu ++ hoat dong thanh cong!\n";
-        
-        cout << "\n=========================================================" << endl;
+        // Tránh trôi lệnh nếu nhập sai kiểu dữ liệu
+        if (!(cin >> choice)) {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            choice = -1;
+        }
 
-    } catch (const invalid_argument& e) {
-        cout << "\n[LOI HE THONG]: " << e.what() << endl;
-    }
+        switch (choice) {
+            case 1:
+                addTaskFromDashboard(myProject);
+                break;
+            case 2:
+                viewDashboard(myProject);
+                break;
+            case 3:
+                undoLastAction(myProject);
+                break;
+            case 4:
+                extendFirstTask(myProject);
+                break;
+            case 5:
+                stressTestDashboard(myProject);
+                break;
+            case 0:
+                cout << "\nChuong trinh ket thuc. Tam biet!" << endl;
+                break;
+            default:
+                cout << "\n[Loi] Lua chon khong hop le, vui long nhap lai tu 0 den 5!" << endl;
+        }
+    } while (choice != 0);
 
     return 0;
 }
