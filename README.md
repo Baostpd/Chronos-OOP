@@ -1,10 +1,4 @@
 # Chronos-OOP
-C++ OOP midterm project - Chronos personal task manager
-# Chronos-OOP
-C++ OOP midterm project - Chronos personal task manager
-
-
-# Chronos-OOP
 
 ## 1. Giới thiệu đề tài
 
