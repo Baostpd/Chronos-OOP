@@ -10,7 +10,7 @@ class Project {
 private:
     std::string projectName;
     std::vector<Task> taskList; // Container quản lý tập hợp các đối tượng Task
-    std::stack<std::vector<Task>> undoStack; //stack lưu lịch sử hoàn tác
+    std::stack<std::vector<Task> > undoStack; //stack lưu lịch sử hoàn tác
 
 public:
     // Constructor nhận tên dự án
