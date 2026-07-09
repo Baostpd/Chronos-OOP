@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 #include "Task.h" // Nhúng lớp Task để quản lý danh sách nhiệm vụ
-#include <stack> 
+#include <stack>
 
 class Project {
 private:
@@ -30,6 +30,14 @@ public:
     std::vector<Task>& getTaskList() { 
         return taskList; 
     }
+
+
+    // === THÊM MỚI CỦA THÀNH VIÊN 2 ===
+    void registerTask();
+    void unregisterTask();
+    static bool extendTaskByName(const std::string& taskTitle);
+    static bool extendTaskByIndex(int index);
+    static void displayAllTasks();
 };
 
 #endif
