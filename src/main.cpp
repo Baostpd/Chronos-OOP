@@ -7,17 +7,8 @@ using namespace std;
 void addTaskFromDashboard(Project& project);
 void viewDashboard(Project& project);
 void undoLastAction(Project& project);
-void extendFirstTask(Project& project);
+void extendTask(Project& project); // Hàm gia hạn tổng hợp chuẩn OOP
 void stressTestDashboard(Project& project);
-
-
-
-// THÊM: Khai báo hàm mới cho thành viên 2
-void extendTaskByName(Project& project);
-void extendTaskByIndex(Project& project);
-void displayAllTasks(Project& project);
-
-
 
 int main() {
     setvbuf(stdout, NULL, _IONBF, 0);
@@ -30,12 +21,8 @@ int main() {
         cout << "1. Them nhiem vu" << endl;
         cout << "2. Xem danh sach nhiem vu" << endl;
         cout << "3. Hoan tac hanh dong" << endl;
-        cout << "4. Gia han nhiem vu dau tien" << endl;
+        cout << "4. Gia han nhiem vu" << endl; // Đổi tên hiển thị cho tổng quát
         cout << "5. Stress-test 10.000 tasks" << endl;
-          // THÊM: Các lựa chọn mới cho thành viên 2
-        cout << "6. Gia han nhiem vu theo TEN" << endl;
-        cout << "7. Gia han nhiem vu theo THU TU" << endl;
-        cout << "8. Hien thi danh sach nhiem vu (chi tiet)" << endl;
         cout << "0. Thoat chuong trinh" << endl;
         cout << "====================================" << endl;
         cout << "Nhap lua chon cua ban: ";
@@ -50,16 +37,12 @@ int main() {
             case 1: addTaskFromDashboard(myProject); break;
             case 2: viewDashboard(myProject); break;
             case 3: undoLastAction(myProject); break;
-            case 4: extendFirstTask(myProject); break;
+            case 4: extendTask(myProject); break; // Gọi hàm đã được gộp
             case 5: stressTestDashboard(myProject); break;
-            // THÊM: Các case mới
-            case 6: extendTaskByName(myProject); break;
-            case 7: extendTaskByIndex(myProject); break;
-            case 8: displayAllTasks(myProject); break;
             case 0: cout << "\nChuong trinh ket thuc. Tam biet!" << endl; break;
             default: cout << "\n[Loi] Lua chon khong hop le, vui long nhap lai tu 0 den 5!" << endl;
         }
     } while (choice != 0);
 
-    return 0;
+        return 0;
 }

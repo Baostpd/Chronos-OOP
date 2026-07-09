@@ -46,18 +46,62 @@ void undoLastAction(Project& project) {
     project.undo();
 }
 
-void extendFirstTask(Project& project) {
+// HÀM GIA HẠN TỔNG HỢP (Xử lý theo cả số thứ tự và Tên)
+void extendTask(Project& project) {
     if (project.getTaskCount() == 0) {
         cout << "\n[Warning] Danh sach dang trong, khong co nhiem vu de gia han!" << endl;
-    } else {
-        cout << "\n>>> DEMO TOAN TU ++ <<<" << endl;
-        Task& firstTask = project.getTaskList()[0];
-        cout << "[Truoc khi gia han] Deadline la: " << firstTask.getEndDate().toString() << endl;
+        return;
+    }
+
+    auto& taskList = project.getTaskList();
+    int choice;
+
+    cout << "\n>>> GIA HAN NHIEM VU <<<" << endl;
+    cout << "1. Gia han theo so thu tu" << endl;
+    cout << "2. Gia han theo ten" << endl;
+    cout << "Nhap lua chon: ";
+    
+    if (!(cin >> choice)) {
+        cin.clear();
+        cin.ignore(10000, '\n');
+        choice = -1;
+    }
+
+    if (choice == 1) {
+        int index;
+        cout << "Nhap so thu tu nhiem vu can gia han (1 - " << project.getTaskCount() << "): ";
+        cin >> index;
+        if (index > 0 && index <= project.getTaskCount()) {
+            // ĐÃ THÊM: Chụp ảnh trạng thái trước khi thay đổi
+            project.saveCurrentState(); 
+            
+            ++taskList[index - 1]; 
+            cout << "[Thanh cong] Da gia han nhiem vu: " << taskList[index - 1].getTitle() << endl;
+        } else {
+            cout << "[Loi] Vi tri khong hop le!" << endl;
+        }
+    } 
+    else if (choice == 2) {
+        string name;
+        cout << "Nhap ten nhiem vu can gia han: ";
+        cin.ignore();
+        getline(cin, name);
         
-        ++firstTask; 
-        
-        cout << "[Sau khi gia han] Deadline la:   " << firstTask.getEndDate().toString() << endl;
-        cout << "-> Toan tu ++ da hoat dong thanh cong!" << endl;
+        bool found = false;
+        for (auto& task : taskList) {
+            if (task.getTitle() == name) {
+                // ĐÃ THÊM: Chụp ảnh trạng thái trước khi thay đổi
+                project.saveCurrentState(); 
+                
+                ++task; 
+                cout << "[Thanh cong] Da gia han nhiem vu: " << task.getTitle() << endl;
+                found = true;
+                break; 
+            }
+        }
+        if (!found) {
+            cout << "[Loi] Khong tim thay nhiem vu mang ten: " << name << endl;
+        }
     }
 }
 
@@ -71,7 +115,7 @@ void stressTestDashboard(Project& project) {
         for (int i = 1; i <= 10000; ++i) {
             project.addTask(dummyTask, false); 
             if (i % 1000 == 0) {
-                cout << "-> Da chen xuoi lọt " << i << " tasks..." << endl;
+                cout << "-> Tien trinh nap du lieu: " << i << "/10000 tasks..." << endl;
             }
         }
     } 
@@ -81,73 +125,4 @@ void stressTestDashboard(Project& project) {
         cout << "-> He thong da ngan chan tran bo dem an toan!" << endl;
         cout << "-> So luong nhiem vu dung lai an toan o muc: " << project.getTaskCount() << endl;
     }
-
-
-
-    // =========================================================================
-// PHẦN THÊM MỚI CỦA THÀNH VIÊN 2
-// =========================================================================
-
-// 1. Gia hạn nhiệm vụ theo TÊN
-void extendTaskByName(Project& project) {
-    if (project.getTaskCount() == 0) {
-        cout << "\n[Warning] Danh sach dang trong, khong co nhiem vu de gia han!" << endl;
-        return;
-    }
-    
-    cout << "\n--- GIA HAN NHIEM VU THEO TEN ---" << endl;
-    
-    // Hiển thị danh sách task hiện có
-    project.displayDashboard();
-    
-    string taskName;
-    cout << "Nhap ten nhiem vu can gia han: ";
-    cin.ignore();
-    getline(cin, taskName);
-    
-    // Gọi phương thức tĩnh của Task để gia hạn
-    if (Task::extendTaskByName(taskName)) {
-        cout << "-> Da gia han thanh cong nhiem vu: " << taskName << endl;
-    } else {
-        cout << "-> Khong tim thay nhiem vu: " << taskName << endl;
-    }
-}
-
-// 2. Gia hạn nhiệm vụ theo THỨ TỰ
-void extendTaskByIndex(Project& project) {
-    if (project.getTaskCount() == 0) {
-        cout << "\n[Warning] Danh sach dang trong, khong co nhiem vu de gia han!" << endl;
-        return;
-    }
-    
-    cout << "\n--- GIA HAN NHIEM VU THEO THU TU ---" << endl;
-    
-    // Hiển thị danh sách task hiện có
-    project.displayDashboard();
-    
-    int index;
-    cout << "Nhap so thu tu nhiem vu can gia han (bat dau tu 1): ";
-    cin >> index;
-    
-    // Gọi phương thức tĩnh của Task (chỉ số bắt đầu từ 0)
-    if (Task::extendTaskByIndex(index - 1)) {
-        cout << "-> Da gia han thanh cong nhiem vu thu " << index << endl;
-    } else {
-        cout << "-> Khong the gia han nhiem vu thu " << index << endl;
-    }
-}
-
-// 3. Hiển thị chi tiết tất cả nhiệm vụ
-void displayAllTasksInfo(Project& project) {
-    if (project.getTaskCount() == 0) {
-        cout << "\n[Warning] Danh sach dang trong, khong co nhiem vu de hien thi!" << endl;
-        return;
-    }
-    
-    cout << "\n--- CHI TIET TAT CA NHIEM VU ---" << endl;
-    cout << "Tong so nhiem vu: " << project.getTaskCount() << endl;
-    cout << "========================================" << endl;
-    
-    // Sử dụng displayAllTasks() của Task
-    Task::displayAllTasks();
 }

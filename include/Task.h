@@ -32,25 +32,10 @@ public:
     void validateDates() const;
     void displayBasicInfo() const;
 
-    // Các hàm của Thành viên 2 (Chỉ xuất hiện duy nhất 1 lần ở đây)
+    // Các hàm logic cốt lõi của Thành viên 2
     int calculateUrgencyScore() const;        
     bool operator<(const Task& other) const;  
-    Task& operator++();                       
-
-
-    // === THÊM MỚI CỦA THÀNH VIÊN 2 ===
-    // Đăng ký task
-    void registerTask();
-    void unregisterTask();
-    
-    // Gia hạn task theo TÊN
-    static bool extendTaskByName(const std::string& taskTitle);
-    
-    // Gia hạn task theo THỨ TỰ (chỉ số)
-    static bool extendTaskByIndex(int index);
-    
-    // Hiển thị danh sách task (tiện ích)
-    static void displayAllTasks();
+    Task& operator++(); // Dùng để gia hạn chính task này
 };
 
 #endif

@@ -38,6 +38,9 @@ public:
     static bool extendTaskByName(const std::string& taskTitle);
     static bool extendTaskByIndex(int index);
     static void displayAllTasks();
+
+    // Hàm chụp ảnh trạng thái hiện tại để phục vụ tính năng Hoàn tác
+    void saveCurrentState();
 };
 
 #endif
