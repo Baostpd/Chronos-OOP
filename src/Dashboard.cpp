@@ -81,4 +81,73 @@ void stressTestDashboard(Project& project) {
         cout << "-> He thong da ngan chan tran bo dem an toan!" << endl;
         cout << "-> So luong nhiem vu dung lai an toan o muc: " << project.getTaskCount() << endl;
     }
+
+
+
+    // =========================================================================
+// PHẦN THÊM MỚI CỦA THÀNH VIÊN 2
+// =========================================================================
+
+// 1. Gia hạn nhiệm vụ theo TÊN
+void extendTaskByName(Project& project) {
+    if (project.getTaskCount() == 0) {
+        cout << "\n[Warning] Danh sach dang trong, khong co nhiem vu de gia han!" << endl;
+        return;
+    }
+    
+    cout << "\n--- GIA HAN NHIEM VU THEO TEN ---" << endl;
+    
+    // Hiển thị danh sách task hiện có
+    project.displayDashboard();
+    
+    string taskName;
+    cout << "Nhap ten nhiem vu can gia han: ";
+    cin.ignore();
+    getline(cin, taskName);
+    
+    // Gọi phương thức tĩnh của Task để gia hạn
+    if (Task::extendTaskByName(taskName)) {
+        cout << "-> Da gia han thanh cong nhiem vu: " << taskName << endl;
+    } else {
+        cout << "-> Khong tim thay nhiem vu: " << taskName << endl;
+    }
+}
+
+// 2. Gia hạn nhiệm vụ theo THỨ TỰ
+void extendTaskByIndex(Project& project) {
+    if (project.getTaskCount() == 0) {
+        cout << "\n[Warning] Danh sach dang trong, khong co nhiem vu de gia han!" << endl;
+        return;
+    }
+    
+    cout << "\n--- GIA HAN NHIEM VU THEO THU TU ---" << endl;
+    
+    // Hiển thị danh sách task hiện có
+    project.displayDashboard();
+    
+    int index;
+    cout << "Nhap so thu tu nhiem vu can gia han (bat dau tu 1): ";
+    cin >> index;
+    
+    // Gọi phương thức tĩnh của Task (chỉ số bắt đầu từ 0)
+    if (Task::extendTaskByIndex(index - 1)) {
+        cout << "-> Da gia han thanh cong nhiem vu thu " << index << endl;
+    } else {
+        cout << "-> Khong the gia han nhiem vu thu " << index << endl;
+    }
+}
+
+// 3. Hiển thị chi tiết tất cả nhiệm vụ
+void displayAllTasksInfo(Project& project) {
+    if (project.getTaskCount() == 0) {
+        cout << "\n[Warning] Danh sach dang trong, khong co nhiem vu de hien thi!" << endl;
+        return;
+    }
+    
+    cout << "\n--- CHI TIET TAT CA NHIEM VU ---" << endl;
+    cout << "Tong so nhiem vu: " << project.getTaskCount() << endl;
+    cout << "========================================" << endl;
+    
+    // Sử dụng displayAllTasks() của Task
+    Task::displayAllTasks();
 }

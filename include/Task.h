@@ -36,6 +36,21 @@ public:
     int calculateUrgencyScore() const;        
     bool operator<(const Task& other) const;  
     Task& operator++();                       
+
+
+    // === THÊM MỚI CỦA THÀNH VIÊN 2 ===
+    // Đăng ký task
+    void registerTask();
+    void unregisterTask();
+    
+    // Gia hạn task theo TÊN
+    static bool extendTaskByName(const std::string& taskTitle);
+    
+    // Gia hạn task theo THỨ TỰ (chỉ số)
+    static bool extendTaskByIndex(int index);
+    
+    // Hiển thị danh sách task (tiện ích)
+    static void displayAllTasks();
 };
 
 #endif

@@ -16,8 +16,15 @@ int main() {
 
     Project myProject("Chronos Core");
     Date today(24, 6, 2026);
-    Task t1("Thiet ke UI", today, today, 1);
-    Task t2("Code Core OOP", today, today, 2);
+    Date future1(25, 6, 2026);
+    Date future2(26, 6, 2026);
+    Date future3(27, 6, 2026);
+    
+    // Tạo các task với tên khác nhau
+    Task t1("Thiet ke UI", today, future1, 1);
+    Task t2("Code Core OOP", today, future2, 2);
+    Task t3("Test he thong", today, future3, 3);
+    Task t4("Viet tai lieu", today, future1, 1);
 
     // ----------------------------------------------------------------------
     // TEST 1: KIỂM THỬ TÍNH NĂNG HOÀN TÁC (UNDO)
@@ -59,6 +66,135 @@ int main() {
         cout << "-> Loi khac: " << e.what() << endl;
     }
 
+    // =========================================================================
+    // THÊM MỚI: TEST CÁC CHỨC NĂNG GIA HẠN CỦA THÀNH VIÊN 2
+    // =========================================================================
+    
+    // Xóa project cũ và tạo mới để test sạch sẽ
     cout << "\n==========================================================" << endl;
+    cout << "===== TEST MOI: GIA HAN NHIEM VU THEO TEN & THU TU =====" << endl;
+    cout << "==========================================================" << endl;
+    
+    Project testProject("Test Project");
+    
+    // Thêm các task mới
+    cout << "\n--- Tao cac nhiem vu mau ---" << endl;
+    testProject.addTask(Task("Hoan thanh bao cao", Date(1, 1, 2026), Date(10, 1, 2026), 2));
+    testProject.addTask(Task("Thuyet trinh du an", Date(5, 1, 2026), Date(15, 1, 2026), 1));
+    testProject.addTask(Task("Gui email khach hang", Date(10, 1, 2026), Date(20, 1, 2026), 3));
+    testProject.addTask(Task("Nop tai lieu", Date(1, 1, 2026), Date(12, 1, 2026), 2));
+    
+    cout << "Da tao 4 nhiem vu mau!" << endl;
+    
+    // Hiển thị danh sách ban đầu
+    cout << "\n--- DANH SACH BAN DAU ---" << endl;
+    Task::displayAllTasks();
+    
+    // ----------------------------------------------------------------------
+    // TEST 3: GIA HẠN THEO TÊN
+    // ----------------------------------------------------------------------
+    cout << "\n--- Test 3: Gia han nhiem vu theo TEN ---" << endl;
+    
+    // Hiển thị deadline trước khi gia hạn
+    cout << "[Truoc khi gia han] Deadline cua 'Thuyet trinh du an': ";
+    for (Task* task : testProject.getTaskList()) {
+        if (task->getTitle() == "Thuyet trinh du an") {
+            cout << task->getEndDate().toString() << endl;
+            break;
+        }
+    }
+    
+    // Gia hạn theo tên
+    cout << "\n-> Goi Task::extendTaskByName(\"Thuyet trinh du an\")" << endl;
+    bool result1 = Task::extendTaskByName("Thuyet trinh du an");
+    cout << "-> Ket qua: " << (result1 ? "THANH CONG" : "THAT BAI") << endl;
+    
+    // Hiển thị deadline sau khi gia hạn
+    cout << "[Sau khi gia han] Deadline cua 'Thuyet trinh du an': ";
+    for (Task* task : testProject.getTaskList()) {
+        if (task->getTitle() == "Thuyet trinh du an") {
+            cout << task->getEndDate().toString() << endl;
+            break;
+        }
+    }
+    
+    // Thử gia hạn task không tồn tại
+    cout << "\n-> Goi Task::extendTaskByName(\"Task khong ton tai\")" << endl;
+    bool result2 = Task::extendTaskByName("Task khong ton tai");
+    cout << "-> Ket qua: " << (result2 ? "THANH CONG" : "THAT BAI") << endl;
+    
+    // ----------------------------------------------------------------------
+    // TEST 4: GIA HẠN THEO THỨ TỰ
+    // ----------------------------------------------------------------------
+    cout << "\n--- Test 4: Gia han nhiem vu theo THU TU ---" << endl;
+    
+    // Hiển thị danh sách hiện tại
+    Task::displayAllTasks();
+    
+    // Gia hạn task đầu tiên (index 0)
+    cout << "\n-> Goi Task::extendTaskByIndex(0) - Gia han task dau tien" << endl;
+    cout << "[Truoc khi gia han] Deadline task 1: ";
+    if (testProject.getTaskCount() > 0) {
+        cout << testProject.getTaskList()[0].getEndDate().toString() << endl;
+    }
+    
+    bool result3 = Task::extendTaskByIndex(0);
+    cout << "-> Ket qua: " << (result3 ? "THANH CONG" : "THAT BAI") << endl;
+    
+    cout << "[Sau khi gia han] Deadline task 1: ";
+    if (testProject.getTaskCount() > 0) {
+        cout << testProject.getTaskList()[0].getEndDate().toString() << endl;
+    }
+    
+    // Gia hạn task thứ 3 (index 2)
+    cout << "\n-> Goi Task::extendTaskByIndex(2) - Gia han task thu 3" << endl;
+    cout << "[Truoc khi gia han] Deadline task 3: ";
+    if (testProject.getTaskCount() > 2) {
+        cout << testProject.getTaskList()[2].getEndDate().toString() << endl;
+    }
+    
+    bool result4 = Task::extendTaskByIndex(2);
+    cout << "-> Ket qua: " << (result4 ? "THANH CONG" : "THAT BAI") << endl;
+    
+    cout << "[Sau khi gia han] Deadline task 3: ";
+    if (testProject.getTaskCount() > 2) {
+        cout << testProject.getTaskList()[2].getEndDate().toString() << endl;
+    }
+    
+    // Thử gia hạn với index không hợp lệ
+    cout << "\n-> Goi Task::extendTaskByIndex(99) - Index khong hop le" << endl;
+    bool result5 = Task::extendTaskByIndex(99);
+    cout << "-> Ket qua: " << (result5 ? "THANH CONG" : "THAT BAI") << endl;
+    
+    // ----------------------------------------------------------------------
+    // TEST 5: HIỂN THỊ DANH SÁCH SAU KHI GIA HẠN
+    // ----------------------------------------------------------------------
+    cout << "\n--- Test 5: Hien thi danh sach sau khi gia han ---" << endl;
+    Task::displayAllTasks();
+    
+    // ----------------------------------------------------------------------
+    // TEST 6: KIỂM TRA TOÁN TỬ ++ TRÊN TASK CỤ THỂ
+    // ----------------------------------------------------------------------
+    cout << "\n--- Test 6: Kiem tra toan tu ++ tren task cu the ---" << endl;
+    
+    // Lấy task đầu tiên và gia hạn bằng toán tử ++
+    if (testProject.getTaskCount() > 0) {
+        Task& firstTask = testProject.getTaskList()[0];
+        cout << "[Truoc khi ++] Deadline: " << firstTask.getEndDate().toString() << endl;
+        
+        ++firstTask;  // Gọi toán tử ++
+        
+        cout << "[Sau khi ++] Deadline: " << firstTask.getEndDate().toString() << endl;
+        cout << "-> Toan tu ++ da hoat dong thanh cong!" << endl;
+    }
+    
+    // Hiển thị danh sách cuối cùng
+    cout << "\n--- DANH SACH CUOI CUNG ---" << endl;
+    Task::displayAllTasks();
+
+    cout << "\n==========================================================" << endl;
+    cout << "===== KET THUC TEST THANH VIEN 2 =====" << endl;
+    cout << "==========================================================" << endl;
+    
     return 0;
 }
