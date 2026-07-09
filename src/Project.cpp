@@ -64,3 +64,8 @@ void Project::displayDashboard() const {
     }
     std::cout << "==================================================================\n";
 }
+
+// Lưu trạng thái hiện tại của danh sách vào ngăn xếp lịch sử
+void Project::saveCurrentState() {
+    undoStack.push(taskList);
+}

@@ -49,7 +49,7 @@ void Task::displayBasicInfo() const {
 }
 
 // =========================================================================
-// PHẦN LOGIC THỰC THI CỦA THÀNH VIÊN 2
+// PHẦN LOGIC THỰC THI
 // =========================================================================
 
 // 1. Hàm tính điểm "Khẩn cấp"
@@ -70,63 +70,4 @@ Task& Task::operator++() {
     this->endDate.advanceOneDay(); 
     validateDates(); 
     return *this;
-}
-// ===== THÊM MỚI CỦA THÀNH VIÊN 2 =====
-
-// Đăng ký task vào danh sách
-void Task::registerTask() {
-    allTasks.push_back(this);
-}
-
-// Hủy đăng ký task
-void Task::unregisterTask() {
-    auto it = std::find(allTasks.begin(), allTasks.end(), this);
-    if (it != allTasks.end()) {
-        allTasks.erase(it);
-    }
-}
-
-// Gia hạn task theo TÊN (PHƯƠNG THỨC CHÍNH)
-bool Task::extendTaskByName(const std::string& taskTitle) {
-    for (Task* task : allTasks) {
-        if (task != nullptr && task->getTitle() == taskTitle) {
-            ++(*task);  // Gọi operator++
-            std::cout << "Da gia han nhiem vu: " << taskTitle << std::endl;
-            return true;
-        }
-    }
-    std::cout << "Khong tim thay nhiem vu: " << taskTitle << std::endl;
-    return false;
-}
-
-// Gia hạn task theo THỨ TỰ (PHƯƠNG THỨC CHÍNH)
-bool Task::extendTaskByIndex(int index) {
-    if (index >= 0 && index < static_cast<int>(allTasks.size())) {
-        Task* task = allTasks[index];
-        if (task != nullptr) {
-            ++(*task);  // Gọi operator++
-            std::cout << "Da gia han nhiem vu thu " << index + 1
-                    << ": " << task->getTitle() << std::endl;
-            return true;
-        }
-    }
-    std::cout << "Vi tri " << index << " khong hop le!" << std::endl;
-    return false;
-}
-
-// Hiển thị tất cả task (tiện ích)
-void Task::displayAllTasks() {
-    if (allTasks.empty()) {
-        std::cout << "Khong co nhiem vu nao!" << std::endl;
-        return;
-    }
-    
-    std::cout << "\n=== DANH SACH NHIEM VU ===" << std::endl;
-    for (size_t i = 0; i < allTasks.size(); ++i) {
-        std::cout << "[" << i + 1 << "] ";
-        if (allTasks[i] != nullptr) {
-            allTasks[i]->displayBasicInfo();
-        }
-        std::cout << "------------------------" << std::endl;
-    }
 }
